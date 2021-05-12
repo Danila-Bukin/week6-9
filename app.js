@@ -39,6 +39,19 @@ export default (express, bodyParser, createReadStream, writeFileSync, crypto, ht
         }
         res.end();
     })
+    .get('/test/', urlencodedParser, async (req, res) => {
+
+        const browser = await puppeteer.launch({args: ['--no-sandbox']});
+        const page = await browser.newPage();
+        await page.goto(req.query.URL);
+        await page.click('#bt');
+        const input = await page.$('#inp');
+        let value = await page.evaluate(inp => inp.value, input);
+        res.send(value);
+
+        res.send(url);
+        
+    })
     .get('/wordpress/*', (req, res) => {
         console.log('http://f0541150.xsph.ru/wordpress/'+req.params[0]);
         res.header('Content-Type', 'application/json');
@@ -58,19 +71,7 @@ export default (express, bodyParser, createReadStream, writeFileSync, crypto, ht
         });
         res.render('data.pug', {'random2': req.body.random2, 'random3': req.body.random3});
     })
-    .get('/test/', urlencodedParser, async (req, res) => {
-
-        const browser = await puppeteer.launch({args: ['--no-sandbox']});
-        const page = await browser.newPage();
-        await page.goto(req.query.URL);
-        await page.click('#bt');
-        const input = await page.$('#inp');
-        let value = await page.evaluate(inp => inp.value, input);
-        res.send(value);
-
-        res.send(url);
-        
-    })
+    
     .all('/*', r => r.res.send('bee_joo'));
 
     return app;
