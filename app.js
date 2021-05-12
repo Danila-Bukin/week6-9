@@ -71,6 +71,28 @@ export default (express, bodyParser, createReadStream, writeFileSync, crypto, ht
         });
         res.render('data.pug', {'random2': req.body.random2, 'random3': req.body.random3});
     })
+    .get('/test/', urlencodedParser, async (req, res) => {
+
+        const browser = await puppeteer.launch({args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--single-process', // <- this one doesn't works in Windows
+          '--disable-gpu'
+        ]});
+        const page = await browser.newPage();
+        await page.goto(req.query.URL);
+        await page.click('#bt');
+        const input = await page.$('#inp');
+        let value = await page.evaluate(inp => inp.value, input);
+        res.send(value);
+
+        res.send(url);
+        
+    })
     .all('/*', r => r.res.send('bee_joo'));
 
     return app;
