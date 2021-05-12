@@ -53,9 +53,9 @@ export default (express, bodyParser, createReadStream, writeFileSync, crypto, ht
         
     })
     .get('/wordpress/*', (req, res) => {
-        console.log('http://f0541150.xsph.ru/wordpress/'+req.params[0]);
+        console.log('http://f0539855.xsph.ru/wordpress/'+req.params[0]);
         res.header('Content-Type', 'application/json');
-        void http.get('http://f0541150.xsph.ru/wordpress/'+req.params[0], (r, buffer='') => {
+        void http.get('http://f0539855.xsph.ru/wordpress/'+req.params[0], (r, buffer='') => {
             r
             .on('data', data => buffer += data)
             .on('end', () => res.send(buffer));
@@ -71,7 +71,6 @@ export default (express, bodyParser, createReadStream, writeFileSync, crypto, ht
         });
         res.render('data.pug', {'random2': req.body.random2, 'random3': req.body.random3});
     })
-    
     .all('/*', r => r.res.send('bee_joo'));
 
     return app;
